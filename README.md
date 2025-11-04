@@ -70,12 +70,12 @@ LinearModel/
 
 ## Roadmap
 
-# Regression
+### Regression
 - [x] **Linear Regression**
 - [ ] **Evaluation Metrics (Regression):** MSE, MAE, RMSE, R-squared
 - [ ] **Regularization:** L1 (Lasso) & L2 (Ridge)
 
-# Classification
+### Classification
 - [ ] **Logistic Regression**
 - [ ] **Evaluation Metrics (Classification):**
     - [ ] Confusion Matri
@@ -84,14 +84,14 @@ LinearModel/
 - [ ] **K-Nearest Neighbors (KNN)**
 - [ ] **Support Vector Machines (SVMs)**
 
-# Tree-Based Models
+### Tree-Based Models
 - [ ] **Decision Trees**
 - [ ] **Random Forests**
 
-# Unsupervised Learning
+### Unsupervised Learning
 - [ ] **K-Means Clustering**
 
-# Deep Learning Foundations
+### Deep Learning Foundations
 - [ ] **Neural Networks (Feedforward)**
 - [ ] **Backpropagation**
 - [ ] **Optimizers:**
@@ -99,11 +99,11 @@ LinearModel/
     - [ ] **Adam Optimizer**
 - [ ] **Model Serialization**
 
-# DL Architectures
+### DL Architectures
 - [ ] **Convolutional Neural Networks (CNNs)** (For images)
 - [ ] **Recurrent Neural Networks (RNNs)** (For sequences)
 
-# Modern NLP (Language)
+### Modern NLP (Language)
 - [ ] **Embeddings (Word2Vec, GloVe)**
 - [ ] **Attention Mechanisms**
 - [ ] **Transformers**
