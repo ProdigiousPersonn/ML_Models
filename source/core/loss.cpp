@@ -51,7 +51,8 @@ double L2Loss::compute(const Matrix& y_pred, const Matrix& y_true) const
     double result = 0.0;
     for (int i = 0; i < y_pred.rows(); i++) {
         for (int j = 0; j < y_pred.cols(); j++) {
-            result += pow(y_pred(i, j) - y_true(i, j), 2);
+            double diff = y_pred(i, j) - y_true(i, j);
+            result += diff * diff;
         }
     }
     return result;
@@ -74,7 +75,8 @@ double MSELoss::compute(const Matrix& y_pred, const Matrix& y_true) const
 
     for (int i = 0; i < y_pred.rows(); i++) {
         for (int j = 0; j < y_pred.cols(); j++) {
-            result += pow(y_pred(i, j) - y_true(i, j), 2);
+            double diff = y_pred(i, j) - y_true(i, j);
+            result += diff * diff;
         }
     }
     return result / n;
@@ -100,7 +102,8 @@ double RMSELoss::compute(const Matrix& y_pred, const Matrix& y_true) const
 
     for (int i = 0; i < y_pred.rows(); i++) {
         for (int j = 0; j < y_pred.cols(); j++) {
-            result += pow(y_pred(i, j) - y_true(i, j), 2);
+            double diff = y_pred(i, j) - y_true(i, j);
+            result += diff * diff;
         }
     }
 
@@ -116,7 +119,8 @@ Matrix RMSELoss::gradient(const Matrix& y_pred, const Matrix& y_true) const
 
     double mse_sum = 0.0;
     for (int i = 0; i < error.rows(); i++) {
-        mse_sum += pow(error(i, 0), 2);
+        double err = error(i, 0);
+        mse_sum += err * err;
     }
     double mse = mse_sum / m;
     double rmse_val = (mse > 1e-9) ? sqrt(mse) : 1e-9;

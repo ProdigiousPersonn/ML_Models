@@ -72,7 +72,7 @@ LinearModel/
 
 ### Regression
 - [x] **Linear Regression**
-- [ ] **Evaluation Metrics (Regression):** MSE, MAE, RMSE, R-squared
+- [x] **Evaluation Metrics (Regression):** MSE, MAE, RMSE, R-squared
 - [ ] **Regularization:** L1 (Lasso) & L2 (Ridge)
 
 ### Classification
