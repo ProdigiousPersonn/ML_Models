@@ -1,7 +1,5 @@
 #include "housing-example.h"
 #include <fmt/format.h>
-#include <fstream>
-#include <sstream>
 #include <string>
 #include <vector>
 #include <cmath>
@@ -12,16 +10,13 @@
 #include "ml_lib/core/optimizer.h"
 #include "ml_lib/core/regularizer.h"
 #include "ml_lib/core/metrics.h"
+#include "ml_lib/utils/csv_utils.h"
 
 struct HousingData {
     std::vector<std::vector<double>> features;
     std::vector<double> prices;
     std::vector<std::string> feature_names;
 };
-
-inline double parseBinary(const std::string& value) {
-    return (value[0] == 'y' || value[0] == 'Y') ? 1.0 : 0.0;
-}
 
 inline double parseFurnishing(const std::string& status) {
     char first = status[0];
@@ -31,53 +26,55 @@ inline double parseFurnishing(const std::string& status) {
 }
 
 HousingData loadHousingCSV(const std::string& filename) {
+    using namespace ml_lib::utils;
+
     HousingData data;
-    std::ifstream file(filename);
-
-    if (!file.is_open()) {
-        fmt::print("Error: Could not open file {}\n", filename);
-        return data;
-    }
-
     data.feature_names = {"area", "bedrooms", "bathrooms", "stories",
                           "mainroad", "guestroom", "basement", "hotwaterheating",
                           "airconditioning", "parking", "prefarea", "furnishingstatus"};
 
-    std::string line;
-    std::getline(file, line);
+    std::vector<std::function<double(const std::string&)>> parsers;
 
-    while (std::getline(file, line)) {
-        std::istringstream ss(line);
-        std::string token;
-        std::vector<double> features;
-        features.reserve(12);
-        double price;
-        int col = 0;
+    // Price (millions)
+    parsers.push_back([](const std::string& s) {
+        return std::stod(s) / 1000000.0;
+    });
 
-        while (std::getline(ss, token, ',')) {
-            if (col == 0) {
-                price = std::stod(token) / 1000000.0;
-            } else if (col <= 4) {
-                features.push_back(std::stod(token));
-            } else if (col <= 11) {
-                features.push_back(parseBinary(token));
-            } else if (col == 12) {
-                features.push_back(parseFurnishing(token));
-            }
-            col++;
-        }
-
-        if (!features.empty()) {
-            data.features.push_back(std::move(features));
-            data.prices.push_back(price);
-        }
+    // Number data: area, bedrooms, bathrooms, stories
+    for (int i = 0; i < 4; i++) {
+        parsers.push_back([](const std::string& s) {
+            return std::stod(s);
+        });
     }
 
-    fmt::print("Loaded {} housing samples from {}\n", data.features.size(), filename);
+    // Yes/No
+    for (int i = 0; i < 7; i++) {
+        parsers.push_back(CSVUtils::parseYesNo);
+    }
+
+    // Furnishing status
+    parsers.push_back(parseFurnishing);
+
+    try {
+        auto all_data = CSVUtils::readWithParsers(filename, parsers, true);
+
+        // Split into features and prices
+        for (const auto& row : all_data) {
+            if (!row.empty()) {
+                data.prices.push_back(row[0]); 
+                data.features.push_back(std::vector<double>(row.begin() + 1, row.end()));
+            }
+        }
+
+        fmt::print("Loaded {} housing samples from {}\n", data.features.size(), filename);
+    } catch (const std::exception& e) {
+        fmt::print("Error loading CSV: {}\n", e.what());
+    }
+
     return data;
 }
 
-void normalizeFeatures(std::vector<std::vector<double>>& features) {
+static void normalizeFeatures(std::vector<std::vector<double>>& features) {
     if (features.empty()) return;
 
     const size_t num_features = features[0].size();
@@ -107,14 +104,13 @@ void normalizeFeatures(std::vector<std::vector<double>>& features) {
     }
 }
 
-void splitData(const HousingData& data,
+static void splitData(const HousingData& data,
                Matrix& X_train, Matrix& y_train,
                Matrix& X_test, Matrix& y_test,
                double test_ratio = 0.2) {
 
     const size_t total_samples = data.features.size();
 
-    // Shuffle since ordered on price
     std::vector<size_t> indices(total_samples);
     for (size_t i = 0; i < total_samples; i++) {
         indices[i] = i;

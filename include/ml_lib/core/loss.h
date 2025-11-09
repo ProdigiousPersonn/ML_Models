@@ -2,20 +2,18 @@
 #include "../math/matrix.h"
 
 enum LossType {
-    L1,
-        // | actual - predicted |
     MAE,
         // 1/N * | actual - predicted |
         // Errors treated equally
-    L2,
         // | actual - predicted |^2
     MSE,
         // 1/N * | actual - predicted |^2
         // Large errors penalized more heavily
         // Moves closer to outliers than MAE
-    RMSE
+    RMSE,
         // sqrt(1/N * | actual - predicted |^2 )
         // MSE / MAE combined
+    BCE
 };
 
 
@@ -27,19 +25,7 @@ class LossFunction {
         virtual ~LossFunction() {}
 };
 
-class L1Loss : public LossFunction {
-    public:
-        double compute(const Matrix& y_pred, const Matrix& y_true) const override;
-        Matrix gradient(const Matrix& y_pred, const Matrix& y_true) const override;
-};
-
 class MAELoss : public LossFunction {
-    public:
-        double compute(const Matrix& y_pred, const Matrix& y_true) const override;
-        Matrix gradient(const Matrix& y_pred, const Matrix& y_true) const override;
-};
-
-class L2Loss : public LossFunction {
     public:
         double compute(const Matrix& y_pred, const Matrix& y_true) const override;
         Matrix gradient(const Matrix& y_pred, const Matrix& y_true) const override;
@@ -52,6 +38,12 @@ class MSELoss : public LossFunction {
 };
 
 class RMSELoss : public LossFunction {
+    public:
+        double compute(const Matrix& y_pred, const Matrix& y_true) const override;
+        Matrix gradient(const Matrix& y_pred, const Matrix& y_true) const override;
+};
+
+class BCELoss : public LossFunction {
     public:
         double compute(const Matrix& y_pred, const Matrix& y_true) const override;
         Matrix gradient(const Matrix& y_pred, const Matrix& y_true) const override;

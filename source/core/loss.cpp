@@ -1,23 +1,6 @@
 #include "ml_lib/core/loss.h"
 #include <cmath>
 
-// L1
-double L1Loss::compute(const Matrix& y_pred, const Matrix& y_true) const
-{
-    double result = 0.0;
-    for (int i = 0; i < y_pred.rows(); i++) {
-        for (int j = 0; j < y_pred.cols(); j++) {
-            result += abs(y_pred(i, j) - y_true(i, j));
-        }
-    }
-    return result;
-}
-
-Matrix L1Loss::gradient(const Matrix& y_pred, const Matrix& y_true) const
-{
-    return y_pred.sub(y_true).sign();
-}
-
 
 // MAE
 double MAELoss::compute(const Matrix& y_pred, const Matrix& y_true) const
@@ -42,26 +25,6 @@ Matrix MAELoss::gradient(const Matrix& y_pred, const Matrix& y_true) const
 
     return y_pred.sub(y_true).sign().scale(1.0 / m);
 }
-
-
-// L2
-double L2Loss::compute(const Matrix& y_pred, const Matrix& y_true) const
-{
-    double result = 0.0;
-    for (int i = 0; i < y_pred.rows(); i++) {
-        for (int j = 0; j < y_pred.cols(); j++) {
-            double diff = y_pred(i, j) - y_true(i, j);
-            result += diff * diff;
-        }
-    }
-    return result;
-}
-
-Matrix L2Loss::gradient(const Matrix& y_pred, const Matrix& y_true) const
-{
-    return y_pred.sub(y_true);
-}
-
 
 // MSE
 double MSELoss::compute(const Matrix& y_pred, const Matrix& y_true) const
@@ -128,19 +91,50 @@ Matrix RMSELoss::gradient(const Matrix& y_pred, const Matrix& y_true) const
     return error.scale(final_rmse_scale);
 }
 
+
+// Binary Cross Entropy
+double BCELoss::compute(const Matrix& y_pred, const Matrix& y_true) const
+{
+    double result = 0.0;
+    int n = y_pred.rows() * y_pred.cols();
+    if (n == 0) {
+        return 0.0;
+    }
+
+    for (int i = 0; i < y_pred.rows(); i++) {
+        for (int j = 0; j < y_pred.cols(); j++) {
+            double pred_val = y_pred(i, j);
+            double true_val = y_true(i, j);
+            double epsilon = 1e-9;
+            pred_val = std::max(epsilon, std::min(1.0 - epsilon, pred_val));
+
+            result += ((true_val * log(pred_val)) + ((1 - true_val) * log(1 - pred_val)));
+        }
+    }
+
+    return (result / n);
+}
+
+Matrix BCELoss::gradient(const Matrix& y_pred, const Matrix& y_true) const
+{
+    int m = y_pred.rows();
+    if (m == 0) return Matrix(0, 0);
+
+    return y_pred.sub(y_true).scale(1.0 / m);
+}
+
+
 LossFunction* createLoss(LossType type)
 {
     switch (type) {
-        case LossType::L1:
-            return new L1Loss();
         case LossType::MAE:
             return new MAELoss();
-        case LossType::L2:
-            return new L2Loss();
         case LossType::MSE:
             return new MSELoss();
         case LossType::RMSE:
             return new RMSELoss();
+        case LossType::BCE:
+            return new BCELoss();
         default:
             return new MSELoss();
     }

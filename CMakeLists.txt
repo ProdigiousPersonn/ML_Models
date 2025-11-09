@@ -85,7 +85,8 @@ set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
 ##  Project  ##
 ###############
 
-
+# set(CSV_CXX_STANDARD 11)
+add_subdirectory(csv-parser)
 
 # Check for LTO support (needs to be after project(...) )
 find_lto(CXX)
@@ -104,7 +105,10 @@ add_executable(Build
     source/core/regularizer.cpp
     source/core/metrics.cpp
     source/models/linear-regression.cpp
+    source/models/logistic-regression.cpp
+    source/utils/csv_utils.cpp
     examples/linear-regression/housing/housing-example.cpp
+    examples/logistic-regression/h-disease-example.cpp
     tests/math/matrix-test.cpp
     tests/models/linear-regression-test.cpp
     include/ml_lib/math/matrix.h
@@ -114,7 +118,10 @@ add_executable(Build
     include/ml_lib/core/metrics.h
     include/ml_lib/models/base-model.h
     include/ml_lib/models/linear-regression.h
+    include/ml_lib/models/logistic-regression.h
+    include/ml_lib/utils/csv_utils.h
     examples/linear-regression/housing/housing-example.h
+    examples/logistic-regression/h-disease-example.h
 )
 
 target_include_directories(Build
@@ -123,6 +130,7 @@ target_include_directories(Build
         ${CMAKE_CURRENT_LIST_DIR}/include
         ${CMAKE_CURRENT_LIST_DIR}/tests
         ${CMAKE_CURRENT_LIST_DIR}/examples/linear-regression/housing
+        ${CMAKE_CURRENT_LIST_DIR}/examples/logistic-regression
 )
 
 target_link_libraries(Build
@@ -130,7 +138,7 @@ target_link_libraries(Build
         #libraries/targets to link when linking this library
         #this will automatically setup the needed flags and dependencies when linking against this target
     PRIVATE # The following libraries are only linked for this target, and its flags/dependencies will not be used when linking against this target
-        general fmt::fmt spdlog::spdlog # It is possible to link some libraries for debug or optimized builds only
+        general fmt::fmt spdlog::spdlog csv # It is possible to link some libraries for debug or optimized builds only
         #debug DEBUGLIBS
         #optimized RELEASELIBS
 )
