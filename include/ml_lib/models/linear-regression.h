@@ -1,13 +1,13 @@
 #pragma once
 #include "../math/matrix.h"
-#include "base-model.h"
+#include "gradient-model.h"
 
 // y^​=XW+b
 // y is our approximation
 // X is our design matrix
 // W is our WEIGHT matrix / slope
 // b is our BIAS / y intercept
-class LinearRegression : public BaseModel {
+class LinearRegression : public GradientModel {
     private:
         Matrix weights;
         Matrix bias;

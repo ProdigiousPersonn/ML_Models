@@ -101,7 +101,7 @@ A complete example demonstrating linear regression on a real-world housing datas
 
 ### Heart Disease Prediction (Logistic Regression)
 
-A binary classification example using logistic regression on the Framingham Heart Study dataset:
+A binary classification example using logistic regression on the Framingham Heart Study dataset (https://www.kaggle.com/datasets/dileep070/heart-disease-prediction-using-logistic-regression):
 
 - Dataset: Framingham Heart Study - 10 Year CHD Risk
 - Features: 15 clinical features (age, sex, cholesterol, blood pressure, BMI, etc.)
@@ -130,7 +130,7 @@ Run the examples:
     - [X] Confusion Matrix
     - [X] ROC Curve and AUC
 - [X] **K-Nearest Neighbors (KNN)**
-- [ ] **Support Vector Machines (SVMs)**
+- [X] **Support Vector Machines (SVMs)**
 
 ### Tree-Based Models [ ]
 - [ ] **Decision Trees**

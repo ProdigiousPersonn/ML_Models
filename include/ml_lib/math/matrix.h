@@ -26,6 +26,7 @@ class Matrix {
         const double* getRow(int row) const;
         double* getRow(int row);
         std::vector<double> getRowVector(int row) const;
+        Matrix row(int r) const;
 
         void swapRows(int row1, int row2);
         void print() const;

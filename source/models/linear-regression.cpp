@@ -1,8 +1,13 @@
 #include "ml_lib/models/linear-regression.h"
 
 LinearRegression::LinearRegression(int input_dim, LossFunction* loss, Optimizer* opt, Regularizer* reg)
-    : BaseModel(loss, opt, reg), weights(input_dim, 1, 0.01), bias(1, 1, 0.0),
-      grad_w(input_dim, 1, 0.0), grad_b(1, 1, 0.0) {}
+    : GradientModel(loss, opt, reg)
+{
+    weights = Matrix(input_dim, 1);
+    bias = Matrix(1, 1);
+    grad_w = Matrix(input_dim, 1);
+    grad_b = Matrix(1, 1);
+}
 
 // y^​=XW+b
 Matrix LinearRegression::forward(const Matrix &X)

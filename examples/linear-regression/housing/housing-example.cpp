@@ -155,7 +155,7 @@ int runHousingExample() {
     fmt::print("Housing Price Prediction - Linear Regression\n");
     fmt::print("{:-<60}\n", "");
 
-    HousingData data = loadHousingCSV("./examples/linear-regression/housing/housing.csv");
+    HousingData data = loadHousingCSV("./examples/datasets/housing.csv");
 
     if (data.features.empty()) {
         fmt::print("Error: No data loaded!\n");

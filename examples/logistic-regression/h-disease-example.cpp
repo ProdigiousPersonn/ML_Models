@@ -132,7 +132,7 @@ int runHeartDiseaseExample() {
     fmt::print("Dataset: Framingham Heart Study - 10 Year CHD Risk\n");
     fmt::print("{:-<70}\n", "");
 
-    HeartDiseaseData data = loadFraminghamCSV("./examples/logistic-regression/framingham.csv");
+    HeartDiseaseData data = loadFraminghamCSV("./examples/datasets/heart-disease.csv");
 
     if (data.features.empty()) {
         fmt::print("Error: No data loaded!\n");

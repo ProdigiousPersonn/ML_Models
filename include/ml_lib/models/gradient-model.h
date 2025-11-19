@@ -4,7 +4,7 @@
 #include "../core/optimizer.h"
 #include "../core/regularizer.h"
 
-class BaseModel {
+class GradientModel {
     protected:
         LossFunction* loss_func;
         Optimizer* optimizer;
@@ -17,7 +17,7 @@ class BaseModel {
         Matrix last_output;
 
     public:
-        BaseModel(LossFunction* loss, Optimizer* opt, Regularizer* reg)
+        GradientModel(LossFunction* loss, Optimizer* opt, Regularizer* reg)
             : loss_func(loss), optimizer(opt), regularizer(reg), batch_size(32), epochs(100) {}
 
         virtual Matrix forward(const Matrix& X) = 0;
@@ -42,7 +42,7 @@ class BaseModel {
             batch_size = b;
         }
 
-        virtual ~BaseModel() {
+        virtual ~GradientModel() {
             delete loss_func;
             delete optimizer;
             delete regularizer;

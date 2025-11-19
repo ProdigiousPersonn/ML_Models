@@ -48,6 +48,14 @@ std::vector<double> Matrix::getRowVector(int row) const {
     return std::vector<double>(row_ptr, row_ptr + m_cols);
 }
 
+Matrix Matrix::row(int r) const {
+    Matrix result(1, m_cols);
+    for (int j = 0; j < m_cols; j++) {
+        result(0, j) = (*this)(r, j);
+    }
+    return result;
+}
+
 void Matrix::swapRows(int row1, int row2) {
     if (row1 == row2) return;
     double* r1 = getRow(row1);
