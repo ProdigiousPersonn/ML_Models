@@ -7,6 +7,7 @@ A C++ machine learning library built from the ground up. Implementing various ML
 - **Linear regression** with gradient descent optimization
 - **Logistic regression** for binary classification
 - **K-Nearest Neighbors (KNN)** for classification
+- **Support Vector Machines (SVM)** for classification
 - Matrix operations library (addition, multiplication, transpose, inverse)
 - Loss functions: MSE, MAE, RMSE, L1, L2, Binary Cross-Entropy (BCE)
 - Evaluation metrics:
@@ -74,7 +75,7 @@ LinearModel/
 │   ├── main.cpp           # Entry point
 │   ├── math/              # Matrix operations
 │   ├── core/              # Loss, optimizer, regularizer, metrics
-│   └── models/            # ML model implementations (Linear & Logistic Regression)
+│   └── models/            # ML model implementations (Linear/Logistic Regression, KNN, SVM)
 ├── include/
 │   └── ml_lib/            # Public headers
 ├── examples/
