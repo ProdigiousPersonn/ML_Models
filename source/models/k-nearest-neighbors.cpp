@@ -42,8 +42,8 @@ std::vector<int> KNearestNeighbors::findKNearest(const std::vector<double> &test
     }
 
     int nearest_ind[k];
-    std::vector<double> neighbor_dist = std::vector<double>(-1);
-    std::vector<int> neighbor_ind = std::vector<int>(0);
+    std::vector<double> neighbor_dist = std::vector<double>(k, -1.0);
+    std::vector<int> neighbor_ind = std::vector<int>(k, -1);
     
     for (size_t i = 0; i < X_rows; i++) {
         std::vector<double> row_vec = this->X_train.getRowVector(i);

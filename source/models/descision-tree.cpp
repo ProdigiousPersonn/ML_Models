@@ -8,6 +8,20 @@ DescisionTree::DescisionTree()
     root_node = new Node();
 }
 
+DescisionTree::~DescisionTree()
+{
+    deleteTree(root_node);
+}
+
+void DescisionTree::deleteTree(Node* node)
+{
+    if (node == nullptr) return;
+
+    deleteTree(node->left);
+    deleteTree(node->right);
+    delete node;
+}
+
 std::pair<int, int> DescisionTree::countClasses(const std::vector<int>& indices) {
     int count_0 = 0;
     int count_1 = 0;

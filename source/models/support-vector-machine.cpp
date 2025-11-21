@@ -130,9 +130,10 @@ int SupportVectorMachine::examineExample(int I2) {
         for (int i = 0; i < m; i++) { // Argmax
             if (alphas[i] > 0 && alphas[i] < C) {
                 double diff = abs(errors[i] - E2);
-                if (diff > max_diff)
+                if (diff > max_diff) {
                     max_diff = diff;
                     I = i;
+                }
             }
         }
 
@@ -172,10 +173,10 @@ void SupportVectorMachine::fit(const Matrix &X, const Matrix &Y)
         errors[i] = -Y(i, 0);
     }
     
-    double error_sum = 0;
-    for (int i = 0; i < errors.size(); i++) {
-        error_sum += errors[i];
-    }
+    // double error_sum = 0;
+    // for (int i = 0; i < errors.size(); i++) {
+    //     error_sum += errors[i];
+    // }
 
     int iterations = 0;
     int num_changed = 0;

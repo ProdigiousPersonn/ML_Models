@@ -1,8 +1,6 @@
 #include "ml_lib/models/logistic-regression.h"
 #include <cmath>
 
-const double e = std::exp(1.0);
-
 LogisticRegression::LogisticRegression(int input_dim, LossFunction* loss, Optimizer* opt, Regularizer* reg)
     : LinearRegression(input_dim, loss, opt, reg), weights(input_dim, 1, 0.01), bias(1, 1, 0.0),
       grad_w(input_dim, 1, 0.0), grad_b(1, 1, 0.0) {}
@@ -14,7 +12,7 @@ Matrix LogisticRegression::forward(const Matrix &X)
     Matrix result = X.multiply(weights);
 
     for (int i = 0; i < result.rows(); i++) {
-        result(i, 0) = 1 / (1 + pow(e, -(result(i, 0) + bias(0, 0))) );
+        result(i, 0) = 1 / (1 + pow(std::exp(1.0), -(result(i, 0) + bias(0, 0))) );
     }
 
     last_output = result;

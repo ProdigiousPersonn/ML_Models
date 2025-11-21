@@ -3,8 +3,9 @@
 #include "../core/loss.h"
 #include "../core/optimizer.h"
 #include "../core/regularizer.h"
+#include "model-interface.h"
 
-class GradientModel {
+class GradientModel : public GradientModelInterface {
     protected:
         LossFunction* loss_func;
         Optimizer* optimizer;

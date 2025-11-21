@@ -1,5 +1,6 @@
 #pragma once
 #include "../math/matrix.h"
+#include "model-interface.h"
 #include <vector>
 
 enum KERNEL {
@@ -9,7 +10,7 @@ enum KERNEL {
     SIGMOID,
 };
 
-class SupportVectorMachine {
+class SupportVectorMachine : public FitPredictModel {
     private:
         double C;
         double gamma;
@@ -44,6 +45,6 @@ class SupportVectorMachine {
             double coef0 = 0.0
         );
 
-        void fit(const Matrix& X, const Matrix& y);
-        Matrix predict(const Matrix& X);
+        void fit(const Matrix& X, const Matrix& y) override;
+        Matrix predict(const Matrix& X) override;
 };

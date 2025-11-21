@@ -1,6 +1,6 @@
 #pragma once
 #include "../math/matrix.h"
-#include "gradient-model.h"
+#include "model-interface.h"
 #include <vector>
 
 enum IMPURITY {
@@ -27,7 +27,7 @@ class Node {
         };
 };
 
-class DescisionTree {
+class DescisionTree : public FitPredictModel {
     private:
         Matrix X_train;
         Matrix Y_train;
@@ -44,9 +44,12 @@ class DescisionTree {
         void evaluateNode(Node* node, std::vector<int> indices, int depth);
         int getMajorityClass(std::vector<int> indices);
 
+        void deleteTree(Node* node);
+
     public:
         DescisionTree();
+        ~DescisionTree();
 
-        void fit(const Matrix& X, const Matrix& y);
-        Matrix predict(const Matrix& X);
+        void fit(const Matrix& X, const Matrix& y) override;
+        Matrix predict(const Matrix& X) override;
 };

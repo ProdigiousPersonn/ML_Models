@@ -1,6 +1,6 @@
 #pragma once
 #include "../math/matrix.h"
-#include "gradient-model.h"
+#include "model-interface.h"
 #include <vector>
 
 enum DIST_METRIC {
@@ -8,7 +8,7 @@ enum DIST_METRIC {
     MANHATTAN
 };
 
-class KNearestNeighbors {
+class KNearestNeighbors : public FitPredictModel {
     private:
         int k;
         Matrix X_train;
@@ -21,6 +21,6 @@ class KNearestNeighbors {
     public:
         KNearestNeighbors(int k = 3, DIST_METRIC metric = DIST_METRIC::EUCLIDEAN);
 
-        void fit(const Matrix& X, const Matrix& y);
-        Matrix predict(const Matrix& X);
+        void fit(const Matrix& X, const Matrix& y) override;
+        Matrix predict(const Matrix& X) override;
 };
